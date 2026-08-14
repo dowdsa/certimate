@@ -1,4 +1,5 @@
 ﻿import nlsAccess from "./nls.access.json";
+import nlsAliyunCert from "./nls.aliyuncert.json";
 import nlsCertificate from "./nls.certificate.json";
 import nlsCommon from "./nls.common.json";
 import nlsDashboard from "./nls.dashboard.json";
@@ -19,6 +20,7 @@ export default Object.freeze(
     nlsSettings,
     nlsProvider,
     nlsAccess,
+    nlsAliyunCert,
     nlsPreset,
     nlsCertificate,
     nlsWorkflow,

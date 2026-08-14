@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IconBrowserShare, IconCertificate, IconDots, IconExternalLink, IconReload, IconShieldCancel, IconTrash } from "@tabler/icons-react";
 import { useMount, useRequest } from "ahooks";
-import { App, Button, Dropdown, Input, Segmented, Skeleton, Table, type TableProps, Typography, theme } from "antd";
+import { App, Button, Dropdown, Input, Segmented, Skeleton, Table, Tabs, type TableProps, Typography, theme } from "antd";
 import dayjs from "dayjs";
 import { ClientResponseError } from "pocketbase";
 
@@ -13,6 +13,7 @@ import Empty from "@/components/Empty";
 import Show from "@/components/Show";
 import { CERTIFICATE_SOURCES, type CertificateModel } from "@/domain/certificate";
 import { useAppSettings, useZustandShallowSelector } from "@/hooks";
+import AliyunCertificateList from "@/pages/aliyunCertificates/AliyunCertificateList";
 import { get as getCertificate, list as listCertificates, remove as removeCertificate } from "@/repository/certificate";
 import { usePersistenceSettingsStore } from "@/stores/settings";
 import { unwrapErrMsg } from "@/utils/error";
@@ -50,6 +51,20 @@ const CertificateList = () => {
   });
   const [page, setPage] = useState<number>(() => parseInt(+searchParams.get("page")! + "") || 1);
   const [pageSize, setPageSize] = useState<number>(() => parseInt(+searchParams.get("perPage")! + "") || globalAppSettings.defaultPerPage!);
+
+  const [activeTab, setActiveTab] = useState<string>(() => searchParams.get("tab") ?? "local");
+
+  const handleTabChange = (key: string) => {
+    setActiveTab(key);
+    setSearchParams((prev) => {
+      if (key === "local") {
+        prev.delete("tab");
+      } else {
+        prev.set("tab", key);
+      }
+      return prev;
+    });
+  };
 
   const [tableData, setTableData] = useState<CertificateModel[]>([]);
   const [tableTotal, setTableTotal] = useState<number>(0);
@@ -422,109 +437,128 @@ const CertificateList = () => {
       </div>
 
       <div className="container">
-        <div className="flex items-center justify-between gap-x-2 gap-y-3 not-md:flex-col-reverse not-md:items-start not-md:justify-normal">
-          <div className="flex w-full flex-1 items-center gap-x-2 md:max-w-200">
-            <div>
-              <Segmented
-                options={[
-                  { label: <span className="text-sm">{t("certificate.props.validity.filter.all")}</span>, value: "" },
-                  { label: <span className="text-sm">{t("certificate.props.validity.filter.expiring_soon")}</span>, value: "expiringSoon" },
-                  { label: <span className="text-sm">{t("certificate.props.validity.filter.expired")}</span>, value: "expired" },
-                ]}
-                size="large"
-                value={(filters["state"] as string) || ""}
-                onChange={(value) => {
-                  setPage(1);
-                  setFilters((prev) => ({ ...prev, state: value }));
-                }}
-              />
-            </div>
-            <div className="flex-1">
-              <Input.Search
-                className="text-sm placeholder:text-sm"
-                allowClear
-                defaultValue={filters["keyword"] as string}
-                placeholder={t("certificate.action.search.input.placeholder")}
-                size="large"
-                onSearch={handleSearch}
-              />
-            </div>
-            <div>
-              <Button icon={<IconReload size="1.25em" />} size="large" onClick={handleReloadClick} />
-            </div>
-          </div>
-          <div></div>
-        </div>
+        <Tabs
+          activeKey={activeTab}
+          items={[
+            {
+              key: "local",
+              label: t("aliyunCert.tab.local"),
+              children: (
+                <>
+                  <div className="flex items-center justify-between gap-x-2 gap-y-3 not-md:flex-col-reverse not-md:items-start not-md:justify-normal">
+                    <div className="flex w-full flex-1 items-center gap-x-2 md:max-w-200">
+                      <div>
+                        <Segmented
+                          options={[
+                            { label: <span className="text-sm">{t("certificate.props.validity.filter.all")}</span>, value: "" },
+                            { label: <span className="text-sm">{t("certificate.props.validity.filter.expiring_soon")}</span>, value: "expiringSoon" },
+                            { label: <span className="text-sm">{t("certificate.props.validity.filter.expired")}</span>, value: "expired" },
+                          ]}
+                          size="large"
+                          value={(filters["state"] as string) || ""}
+                          onChange={(value) => {
+                            setPage(1);
+                            setFilters((prev) => ({ ...prev, state: value }));
+                          }}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <Input.Search
+                          className="text-sm placeholder:text-sm"
+                          allowClear
+                          defaultValue={filters["keyword"] as string}
+                          placeholder={t("certificate.action.search.input.placeholder")}
+                          size="large"
+                          onSearch={handleSearch}
+                        />
+                      </div>
+                      <div>
+                        <Button icon={<IconReload size="1.25em" />} size="large" onClick={handleReloadClick} />
+                      </div>
+                    </div>
+                    <div></div>
+                  </div>
 
-        <div className="relative mt-4">
-          <Table<CertificateModel>
-            columns={tableColumns}
-            dataSource={tableData}
-            loading={loading}
-            locale={{
-              emptyText: loading ? (
-                <Skeleton />
-              ) : (
-                <Empty
-                  className="py-24"
-                  title={loadError ? t("common.text.nodata_failed") : t("certificate.text.nodata")}
-                  description={loadError ? unwrapErrMsg(loadError) : t("certificate.text.nodata_description")}
-                  icon={<IconCertificate size={24} />}
-                  extra={
-                    loadError ? (
-                      <Button ghost icon={<IconReload size="1.25em" />} type="primary" onClick={handleReloadClick}>
-                        {t("common.button.reload")}
-                      </Button>
-                    ) : (
-                      <Button icon={<IconExternalLink size="1.25em" />} type="primary" onClick={() => navigate("/workflows")}>
-                        {t("certificate.text.nodata_button")}
-                      </Button>
-                    )
-                  }
-                />
+                  <div className="relative mt-4">
+                    <Table<CertificateModel>
+                      columns={tableColumns}
+                      dataSource={tableData}
+                      loading={loading}
+                      locale={{
+                        emptyText: loading ? (
+                          <Skeleton />
+                        ) : (
+                          <Empty
+                            className="py-24"
+                            title={loadError ? t("common.text.nodata_failed") : t("certificate.text.nodata")}
+                            description={loadError ? unwrapErrMsg(loadError) : t("certificate.text.nodata_description")}
+                            icon={<IconCertificate size={24} />}
+                            extra={
+                              loadError ? (
+                                <Button ghost icon={<IconReload size="1.25em" />} type="primary" onClick={handleReloadClick}>
+                                  {t("common.button.reload")}
+                                </Button>
+                              ) : (
+                                <Button icon={<IconExternalLink size="1.25em" />} type="primary" onClick={() => navigate("/workflows")}>
+                                  {t("certificate.text.nodata_button")}
+                                </Button>
+                              )
+                            }
+                          />
+                        ),
+                      }}
+                      pagination={{
+                        current: page,
+                        pageSize: pageSize,
+                        total: tableTotal,
+                        showSizeChanger: true,
+                        onChange: handlePaginationChange,
+                        onShowSizeChange: handlePaginationChange,
+                      }}
+                      rowClassName="cursor-pointer"
+                      rowKey={(record) => record.id}
+                      rowSelection={tableRowSelection}
+                      scroll={{ x: "max(100%, 960px)" }}
+                      onChange={(_, __, sorter) => {
+                        setSorter(Array.isArray(sorter) ? sorter[0] : sorter);
+                      }}
+                      onRow={(record) => ({
+                        onClick: () => {
+                          handleRecordDetailClick(record);
+                        },
+                      })}
+                    />
+
+                    <Show when={tableSelectedRowKeys.length > 0}>
+                      <div
+                        className="absolute top-0 right-0 left-[32px] z-10 h-[54px]"
+                        style={{
+                          left: "32px", // Match the width of the table row selection checkbox
+                          height: "54px", // Match the height of the table header
+                          background: themeToken.Table?.headerBg ?? themeToken.colorBgElevated,
+                        }}
+                      >
+                        <div className="flex size-full items-center justify-end gap-x-2 overflow-hidden px-4 py-2">
+                          <Button danger ghost onClick={handleBatchDeleteClick}>
+                            {t("common.button.delete")}
+                          </Button>
+                        </div>
+                      </div>
+                    </Show>
+                  </div>
+
+                  <CertificateDetailDrawer {...detailDrawerProps} />
+                </>
               ),
-            }}
-            pagination={{
-              current: page,
-              pageSize: pageSize,
-              total: tableTotal,
-              showSizeChanger: true,
-              onChange: handlePaginationChange,
-              onShowSizeChange: handlePaginationChange,
-            }}
-            rowClassName="cursor-pointer"
-            rowKey={(record) => record.id}
-            rowSelection={tableRowSelection}
-            scroll={{ x: "max(100%, 960px)" }}
-            onChange={(_, __, sorter) => {
-              setSorter(Array.isArray(sorter) ? sorter[0] : sorter);
-            }}
-            onRow={(record) => ({
-              onClick: () => {
-                handleRecordDetailClick(record);
-              },
-            })}
-          />
-
-          <Show when={tableSelectedRowKeys.length > 0}>
-            <div
-              className="absolute top-0 right-0 left-[32px] z-10 h-[54px]"
-              style={{
-                left: "32px", // Match the width of the table row selection checkbox
-                height: "54px", // Match the height of the table header
-                background: themeToken.Table?.headerBg ?? themeToken.colorBgElevated,
-              }}
-            >
-              <div className="flex size-full items-center justify-end gap-x-2 overflow-hidden px-4 py-2">
-                <Button danger ghost onClick={handleBatchDeleteClick}>
-                  {t("common.button.delete")}
-                </Button>
-              </div>
-            </div>
-          </Show>
-        </div>
-
-        <CertificateDetailDrawer {...detailDrawerProps} />
+            },
+            {
+              key: "aliyun",
+              label: t("aliyunCert.tab.aliyun"),
+              children: <AliyunCertificateList />,
+            },
+          ]}
+          onChange={handleTabChange}
+        />
       </div>
     </div>
   );

@@ -1,0 +1,72 @@
+{
+  "aliyunCert": {
+    "tab": {
+      "local": "本地证书",
+      "aliyun": "阿里云证书"
+    },
+    "page": {
+      "heading": "阿里云证书"
+    },
+    "access": {
+      "placeholder": "选择阿里云授权"
+    },
+    "empty": {
+      "select_access": "请先在页面右上角选择阿里云授权凭证",
+      "no_certificates": "暂未查询到证书"
+    },
+    "quota": {
+      "free_3months": "免费证书（3 个月）",
+      "free_1year": "免费证书（1 年）",
+      "left": "张",
+      "used": "已用 {{used}} 张 / 共 {{total}} 张"
+    },
+    "apply": {
+      "button": "申请免费证书",
+      "title": "申请免费证书",
+      "submit": "提交申请",
+      "success": "证书申请已提交，正在自动完成 DNS 验证",
+      "issued": "证书已签发",
+      "domain": "证书域名",
+      "product_code": "证书规格",
+      "username": "联系人姓名",
+      "phone": "联系人手机号",
+      "email": "联系人邮箱",
+      "order_id": "申请单号",
+      "status_title": "申请进度",
+      "dns_hint": "已自动在阿里云云解析中添加 DNS 验证记录，等待验证通过后会自动清理该记录："
+    },
+    "status": {
+      "dns_added": "验证记录已添加",
+      "domain_verify": "等待域名验证",
+      "process": "审核中",
+      "certificate": "已签发",
+      "verify_fail": "审核失败",
+      "payed": "待申请",
+      "timeout": "等待超时",
+      "unknow": "未知"
+    },
+    "props": {
+      "common_name": "证书域名",
+      "sans": "关联域名",
+      "validity": "有效期",
+      "expired": "已过期",
+      "valid": "有效",
+      "issuer": "签发者",
+      "source": "来源",
+      "uploaded": "自定义上传",
+      "issued_by_aliyun": "阿里云签发",
+      "record_zone": "解析域名",
+      "record_host": "主机记录",
+      "record_type": "记录类型",
+      "record_value": "记录值"
+    },
+    "action": {
+      "revoke": "吊销证书",
+      "delete": "删除证书"
+    },
+    "confirm": {
+      "revoke_title": "确定吊销该证书吗？",
+      "delete_title": "确定删除该证书吗？"
+    }
+  }
+}

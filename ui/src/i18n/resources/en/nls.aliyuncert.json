@@ -1,0 +1,72 @@
+{
+  "aliyunCert": {
+    "tab": {
+      "local": "Certificates",
+      "aliyun": "Aliyun Certificates"
+    },
+    "page": {
+      "heading": "Aliyun Certificates"
+    },
+    "access": {
+      "placeholder": "Select an Aliyun access"
+    },
+    "empty": {
+      "select_access": "Please select an Aliyun access credential in the top-right corner first",
+      "no_certificates": "No certificates found"
+    },
+    "quota": {
+      "free_3months": "Free Certificate (3 months)",
+      "free_1year": "Free Certificate (1 year)",
+      "left": "left",
+      "used": "{{used}} used / {{total}} in total"
+    },
+    "apply": {
+      "button": "Apply Free Certificate",
+      "title": "Apply Free Certificate",
+      "submit": "Submit",
+      "success": "Certificate request submitted, DNS verification is on the way",
+      "issued": "Certificate issued",
+      "domain": "Domain",
+      "product_code": "Spec",
+      "username": "Contact name",
+      "phone": "Contact phone",
+      "email": "Contact email",
+      "order_id": "Order ID",
+      "status_title": "Application Progress",
+      "dns_hint": "A DNS verification record has been added to Alibaba Cloud DNS automatically and will be cleaned up once the verification passes:"
+    },
+    "status": {
+      "dns_added": "Record added",
+      "domain_verify": "Awaiting verification",
+      "process": "Under review",
+      "certificate": "Issued",
+      "verify_fail": "Review failed",
+      "payed": "Pending",
+      "timeout": "Timed out",
+      "unknow": "Unknown"
+    },
+    "props": {
+      "common_name": "Domain",
+      "sans": "SANs",
+      "validity": "Validity",
+      "expired": "Expired",
+      "valid": "Valid",
+      "issuer": "Issuer",
+      "source": "Source",
+      "uploaded": "Uploaded",
+      "issued_by_aliyun": "Issued by Aliyun",
+      "record_zone": "DNS zone",
+      "record_host": "Host record",
+      "record_type": "Record type",
+      "record_value": "Record value"
+    },
+    "action": {
+      "revoke": "Revoke",
+      "delete": "Delete"
+    },
+    "confirm": {
+      "revoke_title": "Are you sure you want to revoke this certificate?",
+      "delete_title": "Are you sure you want to delete this certificate?"
+    }
+  }
+}

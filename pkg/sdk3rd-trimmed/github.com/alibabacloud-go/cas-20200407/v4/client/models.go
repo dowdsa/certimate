@@ -31,3 +31,27 @@ type ListUserCertificateOrderResponse = client.ListUserCertificateOrderResponse
 type UploadUserCertificateRequest = client.UploadUserCertificateRequest
 
 type UploadUserCertificateResponse = client.UploadUserCertificateResponse
+
+type CreateCertificateRequestRequest = client.CreateCertificateRequestRequest
+
+type CreateCertificateRequestResponse = client.CreateCertificateRequestResponse
+
+type DeleteCertificateRequestRequest = client.DeleteCertificateRequestRequest
+
+type DeleteCertificateRequestResponse = client.DeleteCertificateRequestResponse
+
+type DeleteUserCertificateRequest = client.DeleteUserCertificateRequest
+
+type DeleteUserCertificateResponse = client.DeleteUserCertificateResponse
+
+type DescribeCertificateStateRequest = client.DescribeCertificateStateRequest
+
+type DescribeCertificateStateResponse = client.DescribeCertificateStateResponse
+
+type DescribePackageStateRequest = client.DescribePackageStateRequest
+
+type DescribePackageStateResponse = client.DescribePackageStateResponse
+
+type RevokeCertificateRequest = client.RevokeCertificateRequest
+
+type RevokeCertificateResponse = client.RevokeCertificateResponse

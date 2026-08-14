@@ -9,6 +9,7 @@ require (
 	github.com/G-Core/gcorelabscdn-go v1.0.37
 	github.com/akamai/AkamaiOPEN-edgegrid-golang/v13 v13.4.0
 	github.com/alibabacloud-go/alb-20200616/v2 v2.3.2
+	github.com/alibabacloud-go/alidns-20150109/v4 v4.7.0
 	github.com/alibabacloud-go/apig-20240327/v10 v10.1.0
 	github.com/alibabacloud-go/cas-20200407/v4 v4.4.0
 	github.com/alibabacloud-go/cdn-20180510/v10 v10.2.0

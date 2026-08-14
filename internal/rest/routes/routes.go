@@ -5,6 +5,7 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tools/router"
 
+	"github.com/certimate-go/certimate/internal/aliyuncert"
 	"github.com/certimate-go/certimate/internal/certificate"
 	"github.com/certimate-go/certimate/internal/notify"
 	"github.com/certimate-go/certimate/internal/repository"
@@ -18,6 +19,7 @@ var (
 	workflowSvc    *workflow.WorkflowService
 	statisticsSvc  *statistics.StatisticsService
 	notifySvc      *notify.NotifyService
+	aliyunCertSvc  *aliyuncert.AliyunCertificateService
 )
 
 func BindRouter(router *router.Router[*core.RequestEvent]) {
@@ -32,6 +34,7 @@ func BindRouter(router *router.Router[*core.RequestEvent]) {
 	workflowSvc = workflow.NewWorkflowService(workflowRepo, workflowRunRepo)
 	statisticsSvc = statistics.NewStatisticsService(statisticsRepo)
 	notifySvc = notify.NewNotifyService(accessRepo)
+	aliyunCertSvc = aliyuncert.NewAliyunCertificateService(accessRepo)
 
 	group := router.Group("/api")
 	group.Bind(apis.RequireSuperuserAuth())
@@ -39,4 +42,5 @@ func BindRouter(router *router.Router[*core.RequestEvent]) {
 	handlers.NewWorkflowsHandler(group, workflowSvc)
 	handlers.NewStatisticsHandler(group, statisticsSvc)
 	handlers.NewNotificationsHandler(group, notifySvc)
+	handlers.NewAliyunCertificatesHandler(group, aliyunCertSvc)
 }
